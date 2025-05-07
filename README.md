@@ -42,7 +42,7 @@ telegram_vip_bot/ ├── N.py               # Core bot logic ├── requir
 ```bash
 pkg update -y && pkg upgrade -y
 pkg install python -y
-git clone https://github.com/Androidnetwork108/-Telegram-Number-BOT-.git
+git clone https://github.com/Androidnetwork108/TG-NUM-BOT108.git
 cd TG-NUM-BOT108
 pip install -r requirements.txt
 ls
