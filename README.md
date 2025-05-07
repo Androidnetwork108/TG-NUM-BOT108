@@ -36,6 +36,10 @@ telegram_vip_bot/ ├── N.py               # Core bot logic ├── requir
 ---
 
 ## 🛠️ Setup Instructions
+1st:- install/clone this git & go to TG-NUM-BOT108 folder & ls
+2nd:- open BOT_TOKEN.env ( # nano BOT_TOKEN.env ) & replace you bot-token 
+3rd:- save open BOT_TOKEN.env ( # control-xy-enter )
+4th:- start bot ( # python N.py )⚡
 
 ### 1. Install Dependencies
 
@@ -46,5 +50,34 @@ git clone https://github.com/Androidnetwork108/TG-NUM-BOT108.git
 cd TG-NUM-BOT108
 pip install -r requirements.txt
 ls
+nano BOT_TOKEN.env # paste your bot-token or save.
+#stat👇run command 
 python N.py
+
+```
+
+---
+
+### 🌐 WHO I AM ?:
+
+> **Name**: WHO I AM ?
+> **Username**: [@Hindu_papa](https://t.me/Hindu_papa)  
+> **Website**: [hacker-hindu-papa108.netlify.app](https://hacker-hindu-papa108.netlify.app)
+
+---
+
+### ✨ CREDITS:
+
+> BOT developed by **@Hindu_papa**  
+> Follow me on Telegram: [@MeNetwork108](https://t.me/MeNetwork108)  
+> Feel free to contribute or modify for learning!
+
+---
+
+### ⚠️ DISCLAIMER:
+
+This BOT is made for **educational purposes only**. Use responsibly!
+
+---
+
 
