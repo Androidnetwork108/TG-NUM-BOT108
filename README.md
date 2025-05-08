@@ -48,8 +48,8 @@ pkg update -y && pkg upgrade -y
 pkg install python -y
 git clone https://github.com/Androidnetwork108/TG-NUM-BOT108.git
 cd TG-NUM-BOT108
+mv BOT_TOKEN.env.example BOT_TOKEN.env
 pip install -r requirements.txt
-ls
 nano BOT_TOKEN.env # paste your bot-token or save.
 #stat👇run command 
 python n.py
