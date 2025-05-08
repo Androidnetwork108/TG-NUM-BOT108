@@ -44,7 +44,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     contact_shared[user_id] = False
 
     welcome_text = f"Welcome to {user_name} our VIP 𝙏𝙚𝙡𝙚𝙜𝙧𝙖𝙢 𝙥𝙧𝙞𝙢𝙞𝙪𝙢👑💎 BOT! ★Don't miss it — access is limited! \u2666 power by:- @Hindu_papa✓."
-    instruction_text = "★𝟏st click 👇(𝘾𝙡𝙞𝙘𝙠 𝙈𝙚)👇 Button & allow request✓.
+    instruction_text = "★𝟏st click 👇(𝘾𝙡𝙞𝙘𝙠 𝙈𝙚)👇 Button & allow request✓."
 
     # Inline keyboard for "WHO I AM ?" button
     inline_keyboard_buttons = [
