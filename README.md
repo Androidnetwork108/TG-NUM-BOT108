@@ -39,7 +39,7 @@ telegram_vip_bot/ ├── N.py               # Core bot logic ├── requir
 1st:- install/clone this git & go to TG-NUM-BOT108 folder & ls
 2nd:- open BOT_TOKEN.env ( # nano BOT_TOKEN.env ) & replace you bot-token 
 3rd:- save open BOT_TOKEN.env ( # control-xy-enter )
-4th:- start bot ( # python N.py )⚡
+4th:- start bot ( # python n.py )⚡
 
 ### 1. Install Dependencies
 
@@ -52,7 +52,7 @@ pip install -r requirements.txt
 ls
 nano BOT_TOKEN.env # paste your bot-token or save.
 #stat👇run command 
-python N.py
+python n.py
 
 ```
 
